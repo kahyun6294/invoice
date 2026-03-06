@@ -473,7 +473,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <div>
           <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px">상호명 *</label>
-          <input id="inp_name" placeholder="주식회사 ○○○" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:5px;font-family:'Noto Sans KR',sans-serif;font-size:13px;">
+          <input id="inp_name" placeholder="주식회사 ○○○" oninput="autoDetectBizType()" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:5px;font-family:'Noto Sans KR',sans-serif;font-size:13px;">
         </div>
         <div>
           <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px">대표자</label>
@@ -482,6 +482,13 @@
         <div>
           <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px">사업자번호</label>
           <input id="inp_brn" placeholder="000-00-00000" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:5px;font-family:'Noto Sans KR',sans-serif;font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px">구분</label>
+          <select id="inp_biztype" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:5px;font-family:'Noto Sans KR',sans-serif;font-size:13px;background:white;">
+            <option value="법인">법인</option>
+            <option value="개인">개인</option>
+          </select>
         </div>
       </div>
       <button onclick="saveClient()" style="background:#1a2744;color:white;border:none;padding:9px 20px;border-radius:5px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;">저장</button>
@@ -855,6 +862,16 @@
     return val;
   }
 
+  function detectBizType(name) {
+    const corpKeywords = ['주식회사','(주)','(유)','유한회사','합자회사','합명회사','유한책임회사','사회적협동조합','협동조합','재단법인','사단법인'];
+    return corpKeywords.some(k => name.includes(k)) ? '법인' : '개인';
+  }
+
+  function autoDetectBizType() {
+    const name = document.getElementById('inp_name').value;
+    document.getElementById('inp_biztype').value = detectBizType(name);
+  }
+
   function renderClientList() {
     const el = document.getElementById('clientList');
     if (!window.clients || window.clients.length === 0) {
@@ -864,7 +881,10 @@
     el.innerHTML = window.clients.map(c => `
       <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#faf8f3;border:1px solid #e8e4db;border-radius:6px;">
         <div>
-          <div style="font-weight:600;font-size:14px;color:#1a2744">${c.name}</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="font-weight:600;font-size:14px;color:#1a2744">${c.name}</div>
+            <span style="font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;${c.bizType === '법인' ? 'background:#e8edf5;color:#1a2744' : 'background:#fdf3e3;color:#b8962e'}">${c.bizType || '개인'}</span>
+          </div>
           <div style="font-size:12px;color:#6b7280;margin-top:2px">${c.ceo ? c.ceo + ' · ' : ''}${c.brn || ''}</div>
         </div>
         <div style="display:flex;gap:8px;">
@@ -883,6 +903,7 @@
     document.getElementById('inp_name').value = c.name || '';
     document.getElementById('inp_ceo').value = c.ceo || '';
     document.getElementById('inp_brn').value = c.brn || '';
+    document.getElementById('inp_biztype').value = c.bizType || detectBizType(c.name || '');
     const saveBtn = document.querySelector('[onclick="saveClient()"]');
     saveBtn.textContent = '수정 완료';
     saveBtn.setAttribute('onclick', `updateClient(${id})`);
@@ -1038,12 +1059,14 @@
       name,
       ceo: document.getElementById('inp_ceo').value.trim(),
       brn: window.formatBrn(document.getElementById('inp_brn').value.trim()),
+      bizType: document.getElementById('inp_biztype').value,
     };
     try {
       const docRef = await addDoc(_colRef, client);
       client._docId = docRef.id;
       window.clients.push(client);
       ['inp_name','inp_ceo','inp_brn'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('inp_biztype').value = '법인';
       window.renderClientList();
       window.updateSelect();
     } catch(e) { alert('저장 실패: ' + e.message); }
@@ -1070,10 +1093,11 @@
       name,
       ceo: document.getElementById('inp_ceo').value.trim(),
       brn: window.formatBrn(document.getElementById('inp_brn').value.trim()),
+      bizType: document.getElementById('inp_biztype').value,
     };
     try {
       await updateDoc(doc(_db, 'clients', window.clients[idx]._docId), {
-        name: updated.name, ceo: updated.ceo, brn: updated.brn
+        name: updated.name, ceo: updated.ceo, brn: updated.brn, bizType: updated.bizType
       });
       window.clients[idx] = updated;
       ['inp_name','inp_ceo','inp_brn'].forEach(i => document.getElementById(i).value = '');
