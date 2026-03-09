@@ -573,7 +573,8 @@
   <div style="font-size:13px;color:#444;line-height:1.9;margin-bottom:20px;" id="invoiceGreeting">
     안녕하십니까. 귀사의 무궁한 발전을 기원합니다.<br>
     항상 저희 세무사 이헌 사무소를 믿고 맡겨주셔서 감사드립니다.<br>
-    아래와 같이 청구드립니다.
+    아래와 같이 청구드립니다.<br>
+    감사합니다.
   </div>
   <div class="section-title">청구 내역</div>
   <table id="itemTable">
@@ -799,7 +800,8 @@
     document.getElementById('invoiceGreeting').innerHTML = `
       안녕하십니까. 귀사의 무궁한 발전을 기원합니다.<br>
       항상 저희 세무사 이헌 사무소를 믿고 맡겨주셔서 감사드립니다.<br>
-      ${greetingMap[val] || '업무가 마무리되어'} 아래와 같이 청구드립니다.
+      ${greetingMap[val] || '업무가 마무리되어'} 아래와 같이 청구드립니다.<br>
+      감사합니다.
     `;
 
     // 세목별 항목명 자동 기입
