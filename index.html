@@ -575,7 +575,7 @@
   </div>
 
   <!-- 조정료 내역 -->
-  <div class="section-title">세무조정료 내역</div>
+  <div class="section-title">청구 내역</div>
   <table id="itemTable">
     <colgroup>
       <col style="width:60%">
@@ -803,7 +803,6 @@
       vatSel.value = '';
       document.getElementById('f_biztype').textContent = '부가가치세';
       document.getElementById('f_taxyear').textContent = '';
-      openVatModal();
     } else if (val === '기타') {
       vatSel.style.display = 'none';
       vatSel.value = '';
