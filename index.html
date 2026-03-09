@@ -550,11 +550,6 @@
     </div>
     <div class="doc-title">
       <h2>청 구 서</h2>
-      <div class="invoice-no">
-        No. <span contenteditable="true">2025-001</span>
-        &nbsp;&nbsp;
-        발행일 : <span contenteditable="true" id="issueDate"></span>
-      </div>
     </div>
   </div>
 
@@ -647,7 +642,7 @@
   <div class="seal-section">
     <div>
       <div style="font-size:13px;color:var(--gray);text-align:right">위와 같이 청구합니다.</div>
-      <div style="font-size:13px;color:var(--gray);margin-top:4px;text-align:right"><span contenteditable="true">2025년 03월 06일</span></div>
+      <div style="font-size:13px;color:var(--gray);margin-top:4px;text-align:right"><span contenteditable="true" id="sealDate"></span></div>
     </div>
     <div class="seal-block">
       <div class="seal-label" style="font-weight:600;font-size:14px;color:var(--navy);margin-bottom:6px">세무사 이헌 사무소</div>
@@ -663,7 +658,7 @@
   const y = today.getFullYear();
   const m = String(today.getMonth()+1).padStart(2,'0');
   const d = String(today.getDate()).padStart(2,'0');
-  document.getElementById('issueDate').textContent = `${y}년 ${m}월 ${d}일`;
+  document.getElementById('sealDate').textContent = `${y}년 ${m}월 ${d}일`;
 
   function parseNum(str) {
     return parseInt(str.replace(/[^0-9]/g, '')) || 0;
