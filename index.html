@@ -604,15 +604,15 @@
     <tfoot>
       <tr class="vat-row">
         <td style="font-weight:600;padding-left:30px;padding-top:10px;padding-bottom:10px;">공급가액 합계</td>
-        <td id="subtotalCell" style="text-align:right;font-weight:600;padding-right:60px;">2,850,000</td>
+        <td id="subtotalCell" style="text-align:right;font-weight:600;padding-right:60px;">0</td>
       </tr>
       <tr class="vat-row">
         <td style="font-weight:600;padding-left:30px;padding-top:10px;padding-bottom:10px;">부가가치세 (10%)</td>
-        <td id="vatCell" style="text-align:right;font-weight:600;padding-right:60px;">285,000</td>
+        <td id="vatCell" style="text-align:right;font-weight:600;padding-right:60px;">0</td>
       </tr>
       <tr class="total-row">
         <td style="font-weight:700;padding-left:30px;padding-top:10px;padding-bottom:10px;">청 구 금 액 합 계</td>
-        <td id="totalCell" style="text-align:right;padding-right:60px;font-weight:700;">3,135,000</td>
+        <td id="totalCell" style="text-align:right;padding-right:60px;font-weight:700;">0</td>
       </tr>
     </tfoot>
   </table>
@@ -756,6 +756,7 @@
       sel.appendChild(opt);
     }
     loadYear();
+    calcTotal();
   })();
 
   function loadYear() {
