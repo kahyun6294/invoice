@@ -770,14 +770,19 @@
   }
 
   // 세목 드롭다운 초기화
-  (function initTaxTypeSelect() {
+  function initTaxTypeSelect(bizType) {
     const sel = document.getElementById('taxTypeSelect');
-    ['법인세','종합소득세','부가가치세','기타'].forEach(t => {
+    sel.innerHTML = '<option value="">세목 선택</option>';
+    const options = bizType === '법인'
+      ? ['법인세','부가가치세','기타']
+      : ['종합소득세','부가가치세','기타'];
+    options.forEach(t => {
       const opt = document.createElement('option');
       opt.value = t; opt.textContent = t;
       sel.appendChild(opt);
     });
-  })();
+  }
+  initTaxTypeSelect('법인');
 
   function loadTaxType() {
     const val = document.getElementById('taxTypeSelect').value;
@@ -937,6 +942,8 @@
     if (c.name) document.getElementById('f_name').textContent = c.name;
     if (c.ceo) document.getElementById('f_ceo').textContent = c.ceo;
     if (c.brn) document.getElementById('f_brn').textContent = c.brn;
+    const bizType = c.bizType || detectBizType(c.name || '');
+    initTaxTypeSelect(bizType);
     closeModal();
   }
   window.applyClient = applyClient;
